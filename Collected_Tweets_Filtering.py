@@ -19,12 +19,12 @@ import datetime
 # define path
 
 # set key word list path
-infile="E:/key_word_list.csv"
+infile="./src/key_word_list.csv"
 # define target files
 Mon="*.gz"
-indir = "E:/" + Mon
+indir = "./" + Mon
 # set result file path
-outfile= "E:/" + "result.csv"
+outfile= "./" + "result.csv"
 
 
 # process keyword list
