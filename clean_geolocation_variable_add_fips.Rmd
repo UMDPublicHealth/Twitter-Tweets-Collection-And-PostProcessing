@@ -1,0 +1,434 @@
+---
+title: "clean_geolocation_variable_add_fips"
+output: html_document
+---
+#### load libraries
+```{r}
+library(tidyverse)
+library(readr)
+library(haven)
+```
+
+#### define target file
+```{r}
+# define the target file
+tweets_df <- read_csv("./result.csv")
+```
+
+```{r}
+# see if there are duplicates
+tweets_df <- tweets_df %>%
+  distinct()
+```
+
+
+#### clean location variables
+* create new variables "city" and "state" based on the existing variable "place_full_name".
+* correct some cases for these two new variables, for example, the city variable may have "Ohio" as its value.
+
+```{r}
+# may need to change
+try(tweets_df$state <- str_extract(tweets_df$place_full_name,";.*"))
+tweets_df$state <- gsub(";", "", tweets_df$state)
+tweets_df$state <- gsub(" ", "", tweets_df$state)
+```
+
+```{r}
+# may need to change
+try(tweets_df$city <- str_extract(tweets_df$place_full_name,"[^;]*"))
+```
+
+
+```{r}
+tweets_df <- tweets_df %>%
+  mutate(state = case_when(
+    city == "Georgia" ~ "GA",
+    city == "Florida" ~ "FL",
+    city == "Texas" ~ "TX",
+    city == "Pennsylvania" ~ "PA",
+    city == "Virginia" ~ "VA",
+    city == "North Carolina" ~ "NC",
+    city == "New York" ~ "NY",
+    city == "California" ~ "CA",
+    city == "South Carolina" ~ "SC",
+    city == "Colorado" ~ "CO",
+    city == "Illinois" ~ "IL",
+    city == "Kentucky" ~ "KY",
+    city == "Alabama" ~ "AL",
+    city == "Ohio" ~ "OH",
+    city == "Mississippi" ~ "MS",
+    city == "Tennessee" ~ "TN",
+    city == "Washington" ~ "DC",
+    city == "Arizona" ~ "AL",
+    city == "Nevada" ~ "NV",
+    city == "Louisiana" ~ "LA",
+    city == "Michigan" ~ "MI",
+    city == "New Jersey" ~ "NJ",
+    city == "Maryland" ~ "MD",
+    city == "Missouri" ~ "MO",
+    city == "Kansas" ~ "KS",
+    city == "Delaware" ~ "DE",
+    city == "Wisconsin" ~ "WI",
+    city == "Indiana" ~ "IN",
+    city == "Arkansas" ~ "AR",
+    city == "Minnesota" ~ "MN",
+    city == "Oklahoma" ~ "OK",
+    city == "Massachusetts" ~ "MA",
+    city == "Oregon" ~ "OR",
+    city == "Iowa" ~ "IA",
+    city == "West Virginia" ~ "WV",
+    city == "Connecticut" ~ "CT",
+    city == "New Mexico" ~ "NM",
+    city == "Maine" ~ "ME",
+    city == "Nebraska" ~ "NE",
+    city == "New Hampshire" ~ "NH",
+    city == "Idaho" ~ "ID",
+    city == "Utah" ~ "UT",
+    city == "Hawaii" ~ "HI",
+    city == "South Dakota" ~ "SD",
+    city == "Vermont" ~ "VT",
+    city == "Guam" ~ "GU",
+    city == "Montana" ~ "MT",
+    city == "North Dakota" ~ "ND",
+    city == "Northern Mariana Islands" ~ "CM",
+    city == "Puerto Rico" ~ "PR",
+    city == "Rhode Island" ~ "RI",
+    city == "Trust Territories" ~ "TT",
+    city == "Virgin Islands" ~ "VI",
+    city == "Wyoming" ~ "WY",
+    city == "District of Columbia" ~ "DC",
+    city == "Alaska" ~ "AK",
+    city == "Tumon" ~ "GU",
+    city == "Dededo" ~ "GU",
+    city == "Ordot" ~ "GU",
+    city == "Barrigada" ~ "GU",
+    city == "Barrigada Heights" ~ "GU",
+    city == "Maite" ~ "GU",
+    city == "Agana Heights" ~ "GU",
+    city == "Santa Rita" ~ "CA",
+    city == "Playa Sardinas I" ~ "PR",
+    TRUE ~ state
+  )) %>%
+  mutate(city = case_when(
+    city == "Georgia" ~ NA_character_,
+    city == "Manhattan" ~ "New York",
+    city == "Florida" ~ NA_character_,
+    city == "Texas" ~ NA_character_,
+    city == "Queens" ~ "New York",
+    city == "Pennsylvania" ~ NA_character_,
+    city == "Virginia" ~ NA_character_,
+    city == "North Carolina" ~ NA_character_,
+    city == "New York" ~ NA_character_,
+    city == "California" ~ NA_character_,
+    city == "South Carolina" ~ NA_character_,
+    #city == "Paradise" ~ NA_character_,
+    city == "Colorado" ~ NA_character_,
+    city == "Illinois" ~ NA_character_,
+    city == "Kentucky" ~ NA_character_,
+    city == "Alabama" ~ NA_character_,
+    city == "Ohio" ~ NA_character_,
+    city == "Mississippi" ~ NA_character_,
+    city == "Tennessee" ~ NA_character_,
+    city == "Washington" ~ NA_character_,
+    city == "Arizona" ~ NA_character_,
+    city == "Nevada" ~ NA_character_,
+    city == "Louisiana" ~ NA_character_,
+    city == "Michigan" ~ NA_character_,
+    city == "New Jersey" ~ NA_character_,
+    city == "Maryland" ~ NA_character_,
+    city == "Missouri" ~ NA_character_,
+    city == "Kansas" ~ NA_character_,
+    city == "Delaware" ~ NA_character_,
+    city == "Wisconsin" ~ NA_character_,
+    city == "Indiana" ~ NA_character_,
+    city == "Arkansas" ~ NA_character_,
+    city == "Minnesota" ~ NA_character_,
+    city == "Oklahoma" ~ NA_character_,
+    city == "Massachusetts" ~ NA_character_,
+    city == "Oregon" ~ NA_character_,
+    city == "Iowa" ~ NA_character_,
+    city == "West Virginia" ~ NA_character_,
+    #city == "Enterprise" ~ NA_character_,
+    city == "Connecticut" ~ NA_character_,
+    city == "New Mexico" ~ NA_character_,
+    city == "Maine" ~ NA_character_,
+    city == "Nebraska" ~ NA_character_,
+    city == "New Hampshire" ~ NA_character_,
+    #city == "University" ~ NA_character_,
+    city == "Idaho" ~ NA_character_,
+    city == "Utah" ~ NA_character_,
+    city == "Hawaii" ~ NA_character_,
+    city == "South Dakota" ~ NA_character_,
+    city == "Vermont" ~ NA_character_,
+    city == "Guam" ~ NA_character_,
+    city == "Montana" ~ NA_character_,
+    city == "North Dakota" ~ NA_character_,
+    city == "Northern Mariana Islands" ~ NA_character_,
+    city == "Puerto Rico" ~ NA_character_,
+    city == "Rhode Island" ~ NA_character_,
+    city == "Trust Territories" ~ NA_character_,
+    city == "Virgin Islands" ~ NA_character_,
+    city == "Wyoming" ~ NA_character_,
+    city == "District of Columbia" ~ NA_character_,
+    city == "Alaska" ~ NA_character_,
+    city == "Tumon" ~ NA_character_,
+    city == "Dededo" ~ NA_character_,
+    city == "Ordot" ~ NA_character_,
+    city == "Barrigada" ~ NA_character_,
+    city == "Barrigada Heights" ~ NA_character_,
+    city == "Maite" ~ NA_character_,
+    city == "Agana Heights" ~ NA_character_,
+    city == "Santa Rita" ~ NA_character_,
+    city == "Playa Sardinas I" ~ NA_character_,
+    TRUE ~ city
+  ))
+
+tweets_df
+```
+
+```{r}
+tweets_df <- tweets_df %>%
+  mutate(state = case_when(state == "USA" ~ NA_character_,
+                           place_full_name == "United States" | is.na(place_full_name) ~ NA_character_,
+                           TRUE ~ state),
+         city = case_when(place_full_name == "United States" | is.na(place_full_name) ~ NA_character_,
+                          TRUE ~ city)) 
+```
+
+
+```{r}
+# may need to change if string format error occurs
+tweets_df <- tweets_df %>%
+  mutate(city = case_when(city == "United States" ~ NA_character_,
+                          TRUE ~ city)) %>%
+  mutate(place_b_check = case_when(is.na(state) & is.na(city) ~ 1,
+                                   TRUE ~ NA_real_)) %>%
+  mutate(state = case_when(place_b_check == 1 ~ str_extract(user_place,";.*"),
+                           TRUE ~ state),
+         city = case_when(place_b_check == 1 ~ str_extract(user_place,"[^;]*"),
+                           TRUE ~ city))
+```
+
+```{r}
+# may need to change
+tweets_df$state <- gsub(" ", "", tweets_df$state)
+tweets_df$state <- gsub(";", "", tweets_df$state)
+```
+
+
+```{r}
+tweets_df <- tweets_df %>%
+  mutate(city = case_when(city == "United States" ~ NA_character_,
+                          TRUE ~ city)) %>%
+  mutate(state = case_when(
+    tolower(city) == "georgia" ~ "GA",
+    tolower(city) == "florida" ~ "FL",
+    tolower(city) == "texas" ~ "TX",
+    tolower(city) == "pennsylvania" ~ "PA",
+    tolower(city) == "virginia" ~ "VA",
+    tolower(city) == "north Carolina" ~ "NC",
+    tolower(city) == "new York" ~ "NY",
+    tolower(city) == "california" ~ "CA",
+    tolower(city) == "south Carolina" ~ "SC",
+    tolower(city) == "colorado" ~ "CO",
+    tolower(city) == "illinois" ~ "IL",
+    tolower(city) == "kentucky" ~ "KY",
+    tolower(city) == "alabama" ~ "AL",
+    tolower(city) == "ohio" ~ "OH",
+    tolower(city) == "mississippi" ~ "MS",
+    tolower(city) == "tennessee" ~ "TN",
+    tolower(city) == "washington" ~ "DC",
+    tolower(city) == "arizona" ~ "AL",
+    tolower(city) == "nevada" ~ "NV",
+    tolower(city) == "louisiana" ~ "LA",
+    tolower(city) == "michigan" ~ "MI",
+    tolower(city) == "new Jersey" ~ "NJ",
+    tolower(city) == "maryland" ~ "MD",
+    tolower(city) == "missouri" ~ "MO",
+    tolower(city) == "kansas" ~ "KS",
+    tolower(city) == "delaware" ~ "DE",
+    tolower(city) == "wisconsin" ~ "WI",
+    tolower(city) == "indiana" ~ "IN",
+    tolower(city) == "arkansas" ~ "AR",
+    tolower(city) == "minnesota" ~ "MN",
+    tolower(city) == "oklahoma" ~ "OK",
+    tolower(city) == "massachusetts" ~ "MA",
+    tolower(city) == "oregon" ~ "OR",
+    tolower(city) == "iowa" ~ "IA",
+    tolower(city) == "west Virginia" ~ "WV",
+    tolower(city) == "connecticut" ~ "CT",
+    tolower(city) == "new Mexico" ~ "NM",
+    tolower(city) == "maine" ~ "ME",
+    tolower(city) == "nebraska" ~ "NE",
+    tolower(city) == "new Hampshire" ~ "NH",
+    tolower(city) == "idaho" ~ "ID",
+    tolower(city) == "utah" ~ "UT",
+    tolower(city) == "hawaii" ~ "HI",
+    tolower(city) == "south Dakota" ~ "SD",
+    tolower(city) == "vermont" ~ "VT",
+    tolower(city) == "guam" ~ "GU",
+    tolower(city) == "montana" ~ "MT",
+    tolower(city) == "north Dakota" ~ "ND",
+    tolower(city) == "northern Mariana Islands" ~ "CM",
+    tolower(city) == "puerto Rico" ~ "PR",
+    tolower(city) == "rhode Island" ~ "RI",
+    tolower(city) == "trust Territories" ~ "TT",
+    tolower(city) == "virgin Islands" ~ "VI",
+    tolower(city) == "wyoming" ~ "WY",
+    tolower(city) == "district of Columbia" ~ "DC",
+    tolower(city) == "alaska" ~ "AK",
+    tolower(city) == "tumon" ~ "GU",
+    tolower(city) == "dededo" ~ "GU",
+    tolower(city) == "ordot" ~ "GU",
+    tolower(city) == "barrigada" ~ "GU",
+    tolower(city) == "barrigada Heights" ~ "GU",
+    tolower(city) == "maite" ~ "GU",
+    tolower(city) == "agana Heights" ~ "GU",
+    tolower(city) == "santa Rita" ~ "CA",
+    tolower(city) == "playa Sardinas I" ~ "PR",
+    TRUE ~ state
+  )) %>%
+  mutate(city = case_when(
+    tolower(city) == "georgia" ~ NA_character_,
+    tolower(city) == "manhattan" ~ "New York",
+    tolower(city) == "florida" ~ NA_character_,
+    tolower(city) == "texas" ~ NA_character_,
+    tolower(city) == "queens" ~ "New York",
+    tolower(city) == "pennsylvania" ~ NA_character_,
+    tolower(city) == "virginia" ~ NA_character_,
+    tolower(city) == "north Carolina" ~ NA_character_,
+    tolower(city) == "new York" ~ NA_character_,
+    tolower(city) == "california" ~ NA_character_,
+    tolower(city) == "south Carolina" ~ NA_character_,
+    #city == "Paradise" ~ NA_character_,
+    tolower(city) == "colorado" ~ NA_character_,
+    tolower(city) == "illinois" ~ NA_character_,
+    tolower(city) == "kentucky" ~ NA_character_,
+    tolower(city) == "alabama" ~ NA_character_,
+    tolower(city) == "ohio" ~ NA_character_,
+    tolower(city) == "mississippi" ~ NA_character_,
+    tolower(city) == "tennessee" ~ NA_character_,
+    tolower(city) == "washington" ~ NA_character_,
+    tolower(city) == "arizona" ~ NA_character_,
+    tolower(city) == "nevada" ~ NA_character_,
+    tolower(city) == "louisiana" ~ NA_character_,
+    tolower(city) == "michigan" ~ NA_character_,
+    tolower(city) == "new Jersey" ~ NA_character_,
+    tolower(city) == "maryland" ~ NA_character_,
+    tolower(city) == "missouri" ~ NA_character_,
+    tolower(city) == "kansas" ~ NA_character_,
+    tolower(city) == "delaware" ~ NA_character_,
+    tolower(city) == "wisconsin" ~ NA_character_,
+    tolower(city) == "indiana" ~ NA_character_,
+    tolower(city) == "arkansas" ~ NA_character_,
+    tolower(city) == "minnesota" ~ NA_character_,
+    tolower(city) == "oklahoma" ~ NA_character_,
+    tolower(city) == "massachusetts" ~ NA_character_,
+    tolower(city) == "oregon" ~ NA_character_,
+    tolower(city) == "iowa" ~ NA_character_,
+    tolower(city) == "west Virginia" ~ NA_character_,
+    #city == "Enterprise" ~ NA_character_,
+    tolower(city) == "connecticut" ~ NA_character_,
+    tolower(city) == "new Mexico" ~ NA_character_,
+    tolower(city) == "maine" ~ NA_character_,
+    tolower(city) == "nebraska" ~ NA_character_,
+    tolower(city) == "new Hampshire" ~ NA_character_,
+    #city == "University" ~ NA_character_,
+    tolower(city) == "idaho" ~ NA_character_,
+    tolower(city) == "utah" ~ NA_character_,
+    tolower(city) == "hawaii" ~ NA_character_,
+    tolower(city) == "south Dakota" ~ NA_character_,
+    tolower(city) == "vermont" ~ NA_character_,
+    tolower(city) == "guam" ~ NA_character_,
+    tolower(city) == "montana" ~ NA_character_,
+    tolower(city) == "north Dakota" ~ NA_character_,
+    tolower(city) == "northern Mariana Islands" ~ NA_character_,
+    tolower(city) == "puerto Rico" ~ NA_character_,
+    tolower(city) == "rhode Island" ~ NA_character_,
+    tolower(city) == "trust Territories" ~ NA_character_,
+    tolower(city) == "virgin Islands" ~ NA_character_,
+    tolower(city) == "wyoming" ~ NA_character_,
+    tolower(city) == "district of Columbia" ~ NA_character_,
+    tolower(city) == "alaska" ~ NA_character_,
+    tolower(city) == "tumon" ~ NA_character_,
+    tolower(city) == "dededo" ~ NA_character_,
+    tolower(city) == "ordot" ~ NA_character_,
+    tolower(city) == "barrigada" ~ NA_character_,
+    tolower(city) == "barrigada Heights" ~ NA_character_,
+    tolower(city) == "maite" ~ NA_character_,
+    tolower(city) == "agana Heights" ~ NA_character_,
+    tolower(city) == "santa Rita" ~ NA_character_,
+    tolower(city) == "playa Sardinas I" ~ NA_character_,
+    TRUE ~ city
+  ))
+```
+
+
+```{r}
+tweets_df <- tweets_df %>%
+    mutate(city = case_when(state == "Arlington" ~ "Arlington",
+                            state == "Austin" ~ "Austin",
+                            state == "AtlanticBeach" ~ "AtlanticBeach",
+                            state == "Atlanta" ~ "Atlanta",
+                            state == "Baltimore" ~ "Baltimore",
+                            state == "Bellevue" ~ "Bellevue",
+                            state == "Bexley" ~ "Bexley",
+                            state == "Boston" ~ "Boston",
+                            state == "Bronx" ~ "Bronx",
+                            state == "Brooklyn" ~ "Brooklyn",
+                           TRUE ~ city)) %>%
+    mutate(state = case_when(state == "Arlington" ~ "VA",
+                             state == "Austin" ~ "TX",
+                             state == "AtlanticBeach" ~ "NC",
+                             state == "Atlanta" ~ "GA",
+                             state == "Baltimore" ~ "MD",
+                             state == "Bellevue" ~ "WA",
+                             state == "Bexley" ~ "OH",
+                             state == "Boston" ~ "MA",
+                             state == "Bronx" ~ "NY",
+                             state == "Brooklyn" ~ "NY",
+                           TRUE ~ state))
+
+```
+
+```{r}
+tweets_df <- tweets_df %>%
+  select(-c(place_b_check))
+```
+
+
+#### add state and county fips
+```{r}
+# reference files for state fips and county fips
+statefips <- read_csv("./src/statefips.csv", 
+    col_types = cols(state = col_skip()))
+
+fipscodes <- read_csv("./src/fipscodes.csv")
+```
+
+```{r}
+statefips <- statefips %>%
+  rename(state = stateinitials)
+```
+
+```{r}
+tweets_df_state <- merge(tweets_df, statefips, all.x = TRUE)
+tweets_df_state
+```
+
+```{r}
+countyfips <- fipscodes %>%
+  select(state, countyfips, cityr2) %>%
+  rename(city = cityr2)
+```
+
+
+```{r}
+tweets_df_county <- left_join(tweets_df_state, countyfips, by = c("city", "state"))
+```
+
+
+#### save result file
+```{r}
+write_csv(tweets_df_county, "./filtered_tweets_with_fips.csv")
+```
