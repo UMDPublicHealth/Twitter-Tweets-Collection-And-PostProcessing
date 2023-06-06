@@ -1,7 +1,7 @@
 # Twitter-Tweets-Collection-And-PostProcessing
-Twitter tweets collection and post-processing, including keyword filtering, variables cleaning up, sentiment testing etc. Please cite us if you use any of the code or the model.
+Twitter tweets collection and post-processing, including keyword filtering, variables cleaning up, sentiment testing etc. For tweets collection, we used Andrew Edward's tutorial (https://towardsdatascience.com/an-extensive-guide-to-collecting-tweets-from-twitter-api-v2-for-academic-research-using-python-3-518fcb71df2a) and also official twitter sample code (https://github.com/twitterdev/Twitter-API-v2-sample-code/tree/main) as references. Please cite us if you use any of the code or the model.
 
-Please follow the steps for tweets collection and post processing. We requested tweets via Twitter Academic Research API. For more information, please go to:
+To appropriate use this repo, please follow the steps for tweets collection and post processing. We requested tweets via Twitter Academic Research API. For more information, please go to:
 https://developer.twitter.com/en/products/twitter-api/academic-research
 
 **Step 1: run Historical_Tweets_Requests.ipynb**
