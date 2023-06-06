@@ -1,5 +1,5 @@
 # Twitter-Tweets-Collection-And-PostProcessing
-Twitter tweets collection and post-processing, including keyword filtering, variables cleaning up, sentiment testing etc.
+Twitter tweets collection and post-processing, including keyword filtering, variables cleaning up, sentiment testing etc. Please cite us if you use any of the code or the model.
 
 Please follow the steps for tweets collection and post processing. We requested tweets via Twitter Academic Research API. For more information, please go to:
 https://developer.twitter.com/en/products/twitter-api/academic-research
